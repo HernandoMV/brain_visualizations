@@ -15,7 +15,9 @@ from rich import print
 from myterial import orange
 from pathlib import Path
 
-file_path = '/home/hernandom/fastdata/brainglobe-playground/implant_coordinates.txt'
+# file_path = '/home/hernandom/fastdata/brainglobe-playground/implant_coordinates.txt'
+# file_path = '/home/hernandom/fastdata/DAopto_histology/implant_coordinates.txt'
+file_path = '/home/hernandom/fastdata/Francesca_fiber_histology/implant_coordinates.txt'
 
 fp = Path(file_path)
 
