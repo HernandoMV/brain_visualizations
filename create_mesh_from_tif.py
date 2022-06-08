@@ -12,7 +12,6 @@ tiffarray = np.zeros((h,w,dataset.n_frames))
 for i in range(dataset.n_frames):
    dataset.seek(i)
    tiffarray[:,:,i] = np.array(dataset)
-# rotate matrix
 
 expim = tiffarray.astype(np.double)
 print(expim.shape)

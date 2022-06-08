@@ -2,7 +2,7 @@
     Print tappered fiber tips from optoinhibition
 """
 from dis import dis
-from math import dist
+# from math import dist
 from brainrender import Scene
 from brainrender import settings
 import numpy as np
@@ -17,9 +17,10 @@ from rich import print
 from myterial import orange
 from pathlib import Path
 
-file_path = '/home/hernandom/data/Microscopy_Data/Optostimulation/D1andD2_Arch_histology-fibers_analysis/implant_coordinates.txt'
+# file_path = '/home/hernandom/data/Microscopy_Data/Optostimulation/D1andD2_Arch_histology-fibers_analysis/implant_coordinates.txt'
 # file_path = '/home/hernandom/fastdata/DAopto_histology/implant_coordinates.txt'
 # file_path = '/home/hernandom/fastdata/Francesca_fiber_histology/implant_coordinates.txt'
+file_path = '/mnt/c/Users/herny/Desktop/SWC/Data/Microscopy_Data/Optostimulation/D1andD2_Arch_histology-fibers_analysis/implant_coordinates.txt'
 
 fp = Path(file_path)
 
