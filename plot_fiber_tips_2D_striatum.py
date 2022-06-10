@@ -44,6 +44,15 @@ Y = coords.y
 Z = coords.z
 Animal_Name = coords.Mouse_name
 
+# select only the fibers used in the analysis
+# CAREFUL HERE WITH WHERE IS LEFT AND WHERE IS RIGHT!!
+# animals that are not included have a # in front of their name
+animal_mask = [not an.startswith('#') for an in Animal_Name]
+X = np.array(list(X[animal_mask])).astype(float)
+Y = np.array(list(Y[animal_mask])).astype(float)
+Z = np.array(list(Z[animal_mask])).astype(float)
+Animal_Name = np.array(list(Animal_Name[animal_mask]))
+
 # read atlas get slice numbers
 atlas = Image.open(atlas_path)
 h,w,_ = np.shape(atlas)
@@ -53,10 +62,10 @@ sl_list = list(range(z_limits[0], z_limits[1], step))
 sl_list = sl_list[-n_images:]
 # hack
 # extreme tail focused:
-sl_list = [150, 200, 240,
-           265, 270, 275,
-           280, 285, 290,
-           295, 300, 305]
+# sl_list = [150, 200, 240,
+#            265, 270, 275,
+#            280, 285, 290,
+#            295, 300, 305]
 
 sl_list = [150, 175, 197,
            217, 240, 258,
@@ -75,9 +84,6 @@ mask_1 = [x.startswith(id_1) for x in Animal_Name]
 mask_2 = [x.startswith(id_2) for x in Animal_Name]
 mask_other = np.logical_and([not e for e in mask_1],
                             [not e for e in mask_2])
-
-# TODO: select only the fibers used in the analysis
-# CAREFUL HERE WITH WHERE IS LEFT AND WHERE IS RIGHT!!
 
 # make the plot
 fig, ax = plt.subplots(1, 1, figsize=[10,10])
