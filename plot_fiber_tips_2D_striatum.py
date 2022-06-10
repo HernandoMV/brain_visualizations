@@ -30,8 +30,9 @@ color_2 = '#056D6A'
 color_other = 'green'
 
 # atlas files paths
-atlas_path = '/mnt/c/Users/herny/Desktop/SWC/Data/Anatomy/ARA_25_micron_mhd/template_reversed.tif'
-cp_image_path = '/mnt/c/Users/herny/Desktop/SWC/Data/Anatomy/AllanBrainAtlas_Images/Striatum_side_flat_with_AUD1proj_RGB.tif'
+# atlas_path = '/mnt/c/Users/herny/Desktop/SWC/Data/Anatomy/ARA_25_micron_mhd/template_reversed.tif'
+atlas_path = '/mnt/c/Users/herny/Desktop/SWC/Data/Anatomy/AllanBrainAtlas_Images/AUDp_projections/Composite_with_atlas_RGB_green.tif'
+cp_image_path = '/mnt/c/Users/herny/Desktop/SWC/Data/Anatomy/AllanBrainAtlas_Images/Striatum_side_flat_with_AUD1proj_RGB_all.tif'
 
 fp = Path(file_path)
 parent = fp.parent
@@ -45,11 +46,29 @@ Animal_Name = coords.Mouse_name
 
 # read atlas get slice numbers
 atlas = Image.open(atlas_path)
-h,w = np.shape(atlas)
+h,w,_ = np.shape(atlas)
 # decide on the number of images
 step = int(np.floor((z_limits[1] - z_limits[0]) / n_images))
 sl_list = list(range(z_limits[0], z_limits[1], step))
 sl_list = sl_list[-n_images:]
+# hack
+# extreme tail focused:
+sl_list = [150, 200, 240,
+           265, 270, 275,
+           280, 285, 290,
+           295, 300, 305]
+
+sl_list = [150, 175, 197,
+           217, 240, 258,
+           270, 280, 288,
+           295, 300, 305]
+
+# Mirror all to the right hemisphere
+atlas_mid_point = w/2
+for i in range(len(Z)):
+    if Z[i] < atlas_mid_point:
+        dist_to_center = atlas_mid_point - Z[i]
+        Z[i] = atlas_mid_point + dist_to_center
 
 # separate animals
 mask_1 = [x.startswith(id_1) for x in Animal_Name]
@@ -103,7 +122,7 @@ fig2, axs = plt.subplots(rows, cols, figsize=[cols * w/50, rows * h/50])
 axs = axs.ravel()
 for c,i in enumerate(sl_list):
     atlas.seek(i)
-    axs[c].imshow(atlas, cmap='gray_r')
+    axs[c].imshow(atlas)#, cmap='gray_r')
     axs[c].axis('off')
 # fig2.subplots_adjust(wspace=0, hspace=0)
 fig2.tight_layout()
