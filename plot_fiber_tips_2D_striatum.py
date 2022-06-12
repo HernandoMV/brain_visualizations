@@ -27,7 +27,11 @@ id_2 = 'D2'
 color_1 = '#87CEEB'
 color_2 = '#056D6A'
 
-color_other = 'green'
+# photometry and DA stimulation
+color_1 = '#002F3A' #tstr
+color_2 = '#E95F32'
+
+color_other = 'red'
 
 # atlas files paths
 # atlas_path = '/mnt/c/Users/herny/Desktop/SWC/Data/Anatomy/ARA_25_micron_mhd/template_reversed.tif'
