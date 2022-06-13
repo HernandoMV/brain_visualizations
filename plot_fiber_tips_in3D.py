@@ -17,13 +17,30 @@ from rich import print
 from myterial import orange
 from pathlib import Path
 
-# file_path = '/home/hernandom/data/Microscopy_Data/Optostimulation/D1andD2_Arch_histology-fibers_analysis/implant_coordinates.txt'
-# file_path = '/home/hernandom/fastdata/DAopto_histology/implant_coordinates.txt'
-# file_path = '/home/hernandom/fastdata/Francesca_fiber_histology/implant_coordinates.txt'
-file_path = '/mnt/c/Users/herny/Desktop/SWC/Data/Microscopy_Data/Optostimulation/D1andD2_Arch_histology-fibers_analysis/implant_coordinates.txt'
+file_path = '/home/hernandom/data/Microscopy_Data/Optostimulation/D1andD2_Arch_histology-fibers_analysis/implant_coordinates.txt'
+# file_path = '/home/hernandom/data/Microscopy_Data/Optostimulation/Dopamine_Optostimulation_histology_fibers_analysis/implant_coordinates.txt'
+# file_path = '/home/hernandom/data/Microscopy_Data/Francesca_fiber_histology/implant_coordinates.txt'
+# file_path = '/mnt/c/Users/herny/Desktop/SWC/Data/Microscopy_Data/Optostimulation/D1andD2_Arch_histology-fibers_analysis/implant_coordinates.txt'
+
+# Mirror the image
+mirror = True
+
+# select the identifier to separate mice
+id_1 = 'D1'
+id_2 = 'D2'
+# id_1 = 'tStr'
+# id_2 = 'Nac'
+
+# # select colors
+# # for D1 and D2 Arch
+color_1 = '#87CEEB'
+color_2 = '#056D6A'
+
+# # photometry and DA stimulation
+# color_1 = '#002F3A' #tstr
+# color_2 = '#E95F32'
 
 fp = Path(file_path)
-
 parent = fp.parent
 
 top_half_camera = {
@@ -70,43 +87,61 @@ Y = 25 * coords.y
 Z = 25 * coords.z
 Animal_Name = coords.Mouse_name
 
+# select only the fibers used in the analysis
+# CAREFUL HERE WITH WHERE IS LEFT AND WHERE IS RIGHT!!
+# animals that are not included have a # in front of their name
+animal_mask = [not an.startswith('#') for an in Animal_Name]
+X = np.array(list(X[animal_mask])).astype(float)
+Y = np.array(list(Y[animal_mask])).astype(float)
+Z = np.array(list(Z[animal_mask])).astype(float)
+Animal_Name = np.array(list(Animal_Name[animal_mask]))
 
 # Plot all together:
 
 # top view
 scene = Scene(inset=False, title="", screenshots_folder=parent)
-region = scene.add_brain_region("CP",alpha=0.2)
+region = scene.add_brain_region("CP",alpha=0.2, color='gray')
+region2 = scene.add_brain_region("ACB",alpha=0.2, color='gray')
+region3 = scene.add_brain_region("FS",alpha=0.2, color='gray')
 
 # Mirror all to the right hemisphere
-atlas_mid_point = region.centerOfMass()[2]
-for i in range(len(Z)):
-    if Z[i] > atlas_mid_point:
-        dist_to_center = atlas_mid_point - Z[i]
-        Z[i] = atlas_mid_point + dist_to_center
+if mirror:
+    atlas_mid_point = region.centerOfMass()[2]
+    for i in range(len(Z)):
+        if Z[i] > atlas_mid_point:
+            dist_to_center = atlas_mid_point - Z[i]
+            Z[i] = atlas_mid_point + dist_to_center
 
 # import the custom mesh from AU1 TODO
 # scene.add(own_mesh, color="tomato")
+fname = ''
+if mirror:
+    fname = '_mirror'
+
 pts = np.array([[x, y, z] for x, y, z in zip(X, Y, Z)])
-# for i in range(len(Animal_Name)):
-#     if Animal_Name[i].startswith('D1'):
-#         scene.add(Points(np.array([pts[i]]), name="fiber_tips", colors="red", radius=50, alpha=.2))
-#     if Animal_Name[i].startswith('D2'):
-#         scene.add(Points(np.array([pts[i]]), name="fiber_tips", colors="green", radius=50, alpha=.2))
-scene.add(Points(pts, name="fiber_tips", colors="red", radius=50, alpha=.2))
+for i in range(len(Animal_Name)):
+    if Animal_Name[i].startswith(id_1):
+        scene.add(Points(np.array([pts[i]]), name="fiber_tips", colors=color_1, radius=50, alpha=.8))
+    if Animal_Name[i].startswith(id_2):
+        scene.add(Points(np.array([pts[i]]), name="fiber_tips", colors=color_2, radius=50, alpha=.8))
+# scene.add(Points(pts, name="fiber_tips", colors="#87CEEB", radius=50, alpha=.2))
 scene.content
-scene.render(camera=top_half_camera, zoom=1.2, interactive=True)
-scene.screenshot(name='top_half_view_all.png')
+scene.render(camera=top_half_camera, zoom=1.2, interactive=False)
+scene.screenshot(name='top_half_view_all' + fname + '.png')
+
+scene.render(camera=top_camera, zoom=1.2, interactive=False)
+scene.screenshot(name='top_view_all' + fname + '.png')
 
 # back view
 scene.render(camera=back_camera, zoom=1.2, interactive=False)
 plane = scene.atlas.get_plane(pos=plane_center, norm=(-1, 0, 0))
 scene.slice(plane)
-scene.screenshot(name='back_view_all.png')
+scene.screenshot(name='back_view_all' + fname + '.png')
 
 # zoom view
 plane = scene.atlas.get_plane(pos=plane_center, norm=(-1, 0, 0))
 scene.render(camera=zoom_camera, zoom=1.2, interactive=False)
-scene.screenshot(name='zoom_view_all.png')
+scene.screenshot(name='zoom_view_all' + fname + '.png')
 
 # close
 scene.close()
