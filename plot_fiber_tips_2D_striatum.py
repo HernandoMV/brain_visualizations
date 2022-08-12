@@ -10,10 +10,11 @@ z_limits = [135, 307]
 y_limits = [98, 271]
 
 # file to process
-file_path = '/home/hernandom/data/Microscopy_Data/Optostimulation/D1andD2_Arch_histology-fibers_analysis/implant_coordinates.txt'
+# file_path = '/home/hernandom/data/Microscopy_Data/Optostimulation/D1andD2_Arch_histology-fibers_analysis/implant_coordinates.txt'
 # file_path = '/home/hernandom/data/Microscopy_Data/Optostimulation/Dopamine_Optostimulation_histology_fibers_analysis/implant_coordinates.txt'
 # file_path = '/home/hernandom/data/Microscopy_Data/Francesca_fiber_histology/implant_coordinates.txt'
 # file_path = '/mnt/c/Users/herny/Desktop/SWC/Data/Microscopy_Data/Optostimulation/Dopamine_Optostimulation_histology_fibers_analysis/implant_coordinates.txt'
+file_path = '/home/hernandom/data/Microscopy_Data/Francesca_fiber_histology/Reward-responses/implant_coordinates.txt'
 
 # select number of slices to show, rows and cols
 n_images = 12
@@ -21,19 +22,20 @@ rows = 4
 cols = 3
 
 # select the identifier to separate mice
-id_1 = 'D1'
-id_2 = 'D2'
-# id_1 = 'tStr'
+# id_1 = 'D1'
+# id_2 = 'D2'
+id_1 = 'tStr'
 # id_2 = 'Nac'
+id_2 = 'SNL'
 
 # select colors
 # for D1 and D2 Arch
-color_1 = '#87CEEB'
-color_2 = '#056D6A'
+# color_1 = '#87CEEB'
+# color_2 = '#056D6A'
 
 # # photometry and DA stimulation
-# color_1 = '#002F3A' #tstr
-# color_2 = '#E95F32'
+color_1 = '#002F3A' #tstr
+color_2 = '#E95F32'
 
 color_other = 'red'
 

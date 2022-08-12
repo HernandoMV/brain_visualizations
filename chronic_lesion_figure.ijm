@@ -2,10 +2,11 @@ run("Close All");
 
 
 // open images
-path_to_folder = "/C:/Users/herny/Desktop/SWC/Data/Microscopy_Data/Histology_of_tail_lesions/Chronic_lesions/Data_for_figure/";
+//path_to_folder = "/C:/Users/herny/Desktop/SWC/Data/Microscopy_Data/Histology_of_tail_lesions/Chronic_lesions/Data_for_figure/";
+path_to_folder = "/home/hernandom/data/Microscopy_Data/Histology_of_tail_lesions/Chronic_lesions/Data_for_figure/";
 atlas_name = "Atlas_dimmed_inverted.tif";
 perc_name = "merged_percentages.tif";
-outline_name = "Outline_Gaussian_inCaudoputamen_3D.tif";
+outline_name = "Outline_Gaussian_inCaudoputamen_3D_dilated.tif";
 
 open(path_to_folder + atlas_name);
 open(path_to_folder + perc_name);
@@ -17,7 +18,7 @@ run("Magenta");
 cols = 3;
 rows = 2;
 
-sl_list = newArray(265, 270, 275, 280, 285, 290);
+sl_list = newArray(250, 265, 271, 277, 283, 289);
 
 for (k = 0; k < sl_list.length; k++) {
 	i = sl_list[k];
